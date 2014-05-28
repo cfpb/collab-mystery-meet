@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block "title" %}Intranet - Mystery Meet{% endblock %}
+
+{% block "content" %}
+
+<div id="content">
+
+    <div class="row project-header">
+        <div class="logo span5">
+            <h2 class="section">
+                <a href="{% url 'mystery:mystery' %}">Mystery Meet</a>
+            </h2>
+        </div>
+        <p class="info">
+            Meet new people around the Bureau! Connect with your
+            colleagues for lunch, coffee, or a video chat.
+        </p>
+    </div>
+
+{% if not interest_obj.match.owner %}
+
+    <div class="submitted-instructions">
+        <h2>Awesome! Thanks for signing up for a Mystery Meet.</h2>
+        <h3>You've requested:</h3>
+        <h3><span class="bold">{{ interest_obj.for_what }}</span class="bold">
+
+        {% if interest_obj.where_text %}
+            near <span class="bold">{{ interest_obj.where_text }}</span>
+        {% endif %}    
+        with someone from 
+        <span class="bold">{{ interest_obj.departments_text }}</span>.</h3>
+
+        <p>We don't have a meet for you quite yet, but we'll send a
+        notification as soon as we find someone who wants to join you. If you
+        don't get paired up this week, we'll move you to the top of the queue
+        next week.</p>
+
+        <div class="mystery-cancel">
+            <a href="{% url 'mystery:close_cancel' interest_obj.id %}" class="btn secondary-action btn-warning">Cancel this Mystery Meet</a>
+        </div>
+    </div>
+
+{% else %}
+    <div class="match-person">
+        <h2>Success! We've matched you up for a Mystery Meet.</h2>
+        <div class="match-person-info span12">
+            {% if match_person.photo_file %}
+                <div class="match-person-photo left">
+                  <img src="{{ match_person.photo_file.url_200x200 }}" alt="{{ match_person.user.first_name }} {{ match_person.user.last_name }}" width="200" />
+                </div>
+            {% endif %}
+            <div class="match-person-info-text left">
+                <h2>{{ match_person.user.first_name }} {{ match_person.user.last_name }}</h2>
+                <div class="info-role">{{ match_person.title }}</div>
+                <div class="info-dept">{{ match_person.org_group }}</div>
+                <div class="match-person-info-list">
+                    <ul>
+                        <li class="info-email">
+                            <span>Email:</span>
+                            <a href="mailto:{{ match_person.user.email }}">{{ match_person.user.email }}</a>
+                        </li>
+                        <li class="info-phone">
+                            <span>Phone:</span>
+                            {% if match_person.office_phone_formatted %}
+                                {{ match_person.office_phone_formatted }}
+                            {% else %}
+                            Unlisted
+                            {% endif %}
+                        </li>
+                        <li class="info-mobile">
+                            <span>Mobile:</span>
+                            {% if match_person.mobile_phone_formatted %}
+                                {{ match_person.mobile_phone_formatted }}
+                            {% else %}
+                            Unlisted
+                            {% endif %}
+                        </li>
+                        <li class="profile-link">
+                            <a href="{% url "staff_directory:person" stub=match_person.stub %}">View Full Profile</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="match-instructions">
+            <div class="instructions-core">
+                <h3>
+                    You and {{ match_person.user.first_name }} should set up
+                    {% if interest_obj.video_chat %}
+                        a time for <span class="bold">video chat</span>.
+                    {% else %}
+                        {% if interest_obj.for_lunch %}
+                            a time and place for <span class="bold">lunch</span> near
+                        {% else %}
+                            a time and place for <span class="bold">coffee</span> near
+                        {% endif %}
+                        {% for location in match_locations %}<span class="bold">{{ location }}</span>{% if not forloop.last %}{% ifequal forloop.revcounter 2 %} or {% else %}, {% endifequal %}{% endif %}{% endfor %}.
+                    {% endif %}
+                    <br><br>Please try to meet with
+                    {{ match_person.user.first_name }} during the next week.
+                    Return to this page to let us know how it went, and to sign
+                    up for a new Mystery Meet!
+                </h3>
+            </div>
+            <p class="instructions-footer">
+                If a few days pass and you still haven’t been able to get in
+                touch with Scott, you can click “It didn’t work out” and get a
+                new match. 
+            </p>
+        </div>
+        <div class="match-actions">
+            <a href="{% url 'mystery:close_complete' interest_obj.id %}" class="btn">We met!</a>
+            <a href="{% url 'mystery:close_incomplete' interest_obj.id %}" class="btn secondary-action btn-warning">It didn't work out.</a>
+        </div>
+    </div>
+{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block "css_files" %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/mystery-meet.css">
+{% endblock %}

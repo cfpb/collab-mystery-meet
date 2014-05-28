@@ -1,0 +1,126 @@
+
+.mystery-form input[type=checkbox] {
+	float:none;
+    margin-bottom: .40em;
+}
+
+.mystery-form input[type=radio] {
+    float: left;
+    display: bl;
+}
+
+.mystery-form ul {
+    list-style: none;
+    padding: 0;
+    width: 74.28571%;
+    margin: 0.5em 0;
+}
+
+.mystery-form div > ul li {
+    display: inline-block;
+    width: 47%;
+    margin: 0 0 0.5em 0;
+}
+
+.mystery-form label {
+    margin-right: 3em;
+}
+
+.mystery-form #submit-buttons {
+    display: block;
+    margin-top: 2em;
+}
+
+
+.mystery-form .meet-choice li {
+    display: block;
+}
+
+.mystery-form h3 {
+    margin: 1.5em 0 .25em 0;
+}
+
+div.department-list > ul li,
+div.location-list > ul li {
+    vertical-align: top;
+    margin-left: .5em;
+}
+.department-list label,
+.location-list label {
+    display: inline-block;
+    padding-left: 1em;
+    text-indent: -1.25em;
+}
+.department-list input[type=checkbox],
+.location-list input[type=checkbox] {
+    width: 1em;
+    height: 1em;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+}
+
+.no-match h4 {
+    font-weight: 100;
+}
+
+.mystery-cancel {
+    margin: 1em 0;
+}
+
+.match-person-info {
+    margin: 1em 0;
+}
+
+.match-person-photo {
+    margin-right: 2em;
+    width: 200px;
+    height: 200px;
+}
+
+.match-person-info-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 2em 0 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.match-person-info-list ul span {
+    font-family: "Avenir Next Demi", Arial, sans-serif;
+    display: inline-block;
+    text-align: left;
+    width: 70px;
+    margin-right: 0.5em;
+}
+
+.match-person-info-text {
+    position: relative;
+    height: 200px;
+}
+
+.match-person-info-list .profile-link {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.match-instructions .instructions-core {
+    margin-top: 1em;
+}
+
+.submitted-instructions .bold,
+.match-instructions .bold {
+    font-family: "Avenir Next Demi", Arial, sans-serif;
+}
+
+.submitted-instructions h2 {
+    margin-bottom: 1em;
+}
+
+.match-actions {
+    margin-bottom: 1.5em;
+}

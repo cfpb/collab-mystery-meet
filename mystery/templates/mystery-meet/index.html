@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block "title" %}Intranet - Mystery Meet{% endblock %}
+
+{% block "content" %}
+
+    <div id="content">
+        <div class="row project-header">
+            <div class="logo span5">
+                <h2 class="section">
+                    <a href="{% url 'mystery:mystery' %}">Mystery Meet</a>
+                </h2>
+            </div>
+            <p class="info">
+                Meet new people around the Bureau! Connect with your
+                colleagues for lunch, coffee, or a video chat.
+            </p>
+        </div>
+
+        <p><em>To meet new people without even leaving your desk, choose the "video chat" option. This
+            allows you to meet with the hundreds of CFPBers around the universe.</em></p>
+
+        <form action="{% url 'mystery:mystery' %}" method="post" class="mystery-form">
+            {% csrf_token %}
+            <h3>This week, I'd like to meet for:</h3>
+            <div class="meet-choice">
+                {{ form.meet_choice }}
+            </div>
+            {{ form.meet_choice.errors }}
+
+            <h3>with someone from:</h3>
+            <div class="department-list">
+                {{ form.departments }}
+            </div>
+            {{ form.departments.errors }}
+
+            <h3>near:</h3>
+            <div class="location-list">
+                <ul>
+                {% for pk, choice in form.locations.field.widget.choices %}
+                    <li><label for="locations_{{ pk }}">
+                        <input id="locations_{{ pk }}" name="locations" type="checkbox" value="{{ pk }}"/>
+                        {{ choice }}
+                    </label></li>
+                {% endfor %}
+                </ul>
+            </div>
+            {{ form.locations.errors }}
+
+            <span id="submit-buttons">
+                <input type="submit" value="Meet someone!" class="btn" />
+            </span>
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block "css_files" %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/mystery-meet.css">
+{% endblock %}
+
+{% block "js_scripts" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/mystery-meet.js"></script>
+{% endblock %}
