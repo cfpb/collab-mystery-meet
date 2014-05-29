@@ -1,5 +1,7 @@
 #Mystery Meet
 
+[![Build Status](https://travis-ci.org/cfpb/collab-mystery-meet.svg?branch=master)](https://travis-ci.org/cfpb/collab-mystery-meet)
+
 *Mystery Meet* is a social app to meet people randomly at an organization for [Collab](https://github.com/cfpb/collab).
 
 
