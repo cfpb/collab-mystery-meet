@@ -52,12 +52,16 @@ def _get_results_page(request, interest_obj):
                               p,
                               context_instance=RequestContext(request))
 
-def _deactivate(user, interest_id, url=None):
+def _deactivate(user, interest_id, url=None, kwargs=None):
     default_redirect = reverse('mystery:mystery')
     interest_obj = Interest.objects.get(id=interest_id)
     if interest_obj.owner == user:
         interest_obj.set_inactive()
         if url is not None:
+            if kwargs is not None:
+                url = url+"?"
+                for key in kwargs:
+                    url += key+"="+kwargs[key]+";"
             return HttpResponseRedirect(url)
     return HttpResponseRedirect(default_redirect)
 
@@ -69,7 +73,19 @@ def close_cancel(request, interest_id):
 def close_complete(request, interest_id):
     try:
         redirect_link = reverse('form_builder:respond', args=('we-met-up',))
-        return _deactivate(request.user, interest_id, redirect_link)
+        interest_obj = get_object_or_404(Interest, id=interest_id)
+
+        kwargs={'Who did you meet?': interest_obj.match.owner.get_full_name(),
+                'Meet type': interest_obj.for_what()}
+        if interest_obj.video_chat:
+            kwargs['Location'] = "Other"
+        if interest_obj.locations.count() == 1:
+            kwargs['Location'] = interest_obj.locations.all()[0].name
+        elif interest_obj.match.locations.count() == 1:
+            kwargs['Location'] = interest_obj.match.locations.all()[0].name
+
+        return _deactivate(request.user, interest_id, redirect_link, kwargs=kwargs)
+
     except NoReverseMatch:
         return _deactivate(request.user, interest_id)
 
@@ -77,6 +93,8 @@ def close_complete(request, interest_id):
 def close_incomplete(request, interest_id):
     try:
         redirect_link = reverse('form_builder:respond', args=('it-didnt-work-out',))
-        return _deactivate(request.user, interest_id, redirect_link)
+        interest_obj = get_object_or_404(Interest, id=interest_id)
+        kwargs={'Who did you meet?': interest_obj.match.owner.get_full_name()}
+        return _deactivate(request.user, interest_id, redirect_link, kwargs=kwargs)
     except NoReverseMatch:
         return _deactivate(request.user, interest_id)
