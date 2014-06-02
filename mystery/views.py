@@ -94,7 +94,7 @@ def close_incomplete(request, interest_id):
     try:
         redirect_link = reverse('form_builder:respond', args=('it-didnt-work-out',))
         interest_obj = get_object_or_404(Interest, id=interest_id)
-        kwargs={'Who did you meet?': interest_obj.match.owner.get_full_name()}
+        kwargs={'Who was your match?': interest_obj.match.owner.get_full_name()}
         return _deactivate(request.user, interest_id, redirect_link, kwargs=kwargs)
     except NoReverseMatch:
         return _deactivate(request.user, interest_id)
