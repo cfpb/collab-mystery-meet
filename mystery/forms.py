@@ -17,7 +17,7 @@ class InterestForm(forms.ModelForm):
         super(InterestForm, self).__init__(*args, **kwargs)
         self.fields['locations'] = LocationModelMultipleChoiceField(
                 widget=forms.CheckboxSelectMultiple,
-                queryset=OfficeLocation.objects.all(),
+                queryset=OfficeLocation.objects.exclude(id="Remote"),
                 required=False)
         self.fields['departments'] = forms.ModelMultipleChoiceField(
                 widget=forms.CheckboxSelectMultiple,
