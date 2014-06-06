@@ -47,11 +47,11 @@
         <div class="match-person-info span12">
             {% if match_person.photo_file %}
                 <div class="match-person-photo left">
-                  <img src="{{ match_person.photo_file.url_200x200 }}" alt="{{ match_person.user.first_name }} {{ match_person.user.last_name }}" width="200" />
+                  <img src="{{ match_person.photo_file.url_200x200 }}" alt="{{ match_person.full_name }}" width="200" />
                 </div>
             {% endif %}
             <div class="match-person-info-text left">
-                <h2>{{ match_person.user.first_name }} {{ match_person.user.last_name }}</h2>
+                <h2>{{ match_person.full_name }}</h2>
                 <div class="info-role">{{ match_person.title }}</div>
                 <div class="info-dept">{{ match_person.org_group }}</div>
                 <div class="match-person-info-list">
@@ -105,7 +105,7 @@
             </div>
             <p class="instructions-footer">
                 If a few days pass and you still haven’t been able to get in
-                touch with Scott, you can click “It didn’t work out” and get a
+                touch with {{ match_person.user.first_name }}, you can click “It didn’t work out” and get a
                 new match. 
             </p>
         </div>
