@@ -10,17 +10,22 @@ from mystery.models import Interest
 from mystery.forms import InterestForm
 import datetime
 
+
 def _create_params(req):
     p = {'is_mystery': True, }
     return p
 
+
 @login_required
 def index(request):
-    active_interests = Interest.objects.filter(owner=request.user, is_active=True)
+    active_interests = Interest.objects.filter(
+        owner=request.user,
+        is_active=True)
     if active_interests.count() > 0:
         return _get_results_page(request, active_interests.latest('created'))
     else:
         return _get_form_page(request)
+
 
 def _get_form_page(request):
     if request.method == 'POST':
@@ -34,8 +39,9 @@ def _get_form_page(request):
         form = InterestForm()
 
     return render_to_response('mystery-meet/index.html',
-        {'form': form},
-        context_instance=RequestContext(request))
+                              {'form': form},
+                              context_instance=RequestContext(request))
+
 
 def _get_results_page(request, interest_obj):
     p = _create_params(request)
@@ -46,11 +52,12 @@ def _get_results_page(request, interest_obj):
     if interest_obj.match:
         match_person = Person.objects.get(user=interest_obj.match.owner)
         p['match_person'] = match_person
-        p['match_locations'] = list(set(interest_obj.locations.all())\
-                .intersection(set(interest_obj.match.locations.all())))
+        p['match_locations'] = list(set(interest_obj.locations.all())
+                                    .intersection(set(interest_obj.match.locations.all())))
     return render_to_response('mystery-meet/match_result.html',
                               p,
                               context_instance=RequestContext(request))
+
 
 def _deactivate(user, interest_id, url=None, kwargs=None):
     default_redirect = reverse('mystery:mystery')
@@ -59,15 +66,17 @@ def _deactivate(user, interest_id, url=None, kwargs=None):
         interest_obj.set_inactive()
         if url is not None:
             if kwargs is not None:
-                url = url+"?"
+                url = url + "?"
                 for key in kwargs:
-                    url += key+"="+kwargs[key]+";"
+                    url += key + "=" + kwargs[key] + ";"
             return HttpResponseRedirect(url)
     return HttpResponseRedirect(default_redirect)
+
 
 @login_required
 def close_cancel(request, interest_id):
     return _deactivate(request.user, interest_id)
+
 
 @login_required
 def close_complete(request, interest_id):
@@ -75,8 +84,8 @@ def close_complete(request, interest_id):
         redirect_link = reverse('form_builder:respond', args=('we-met-up',))
         interest_obj = get_object_or_404(Interest, id=interest_id)
 
-        kwargs={'Who did you meet?': interest_obj.match.owner.get_full_name(),
-                'Meet type': interest_obj.for_what()}
+        kwargs = {'Who did you meet?': interest_obj.match.owner.get_full_name(),
+                  'Meet type': interest_obj.for_what()}
         if interest_obj.video_chat:
             kwargs['Location'] = "Other"
         if interest_obj.locations.count() == 1:
@@ -84,17 +93,25 @@ def close_complete(request, interest_id):
         elif interest_obj.match.locations.count() == 1:
             kwargs['Location'] = interest_obj.match.locations.all()[0].name
 
-        return _deactivate(request.user, interest_id, redirect_link, kwargs=kwargs)
+        return _deactivate(
+            request.user, interest_id, redirect_link, kwargs=kwargs)
 
     except NoReverseMatch:
         return _deactivate(request.user, interest_id)
 
+
 @login_required
 def close_incomplete(request, interest_id):
     try:
-        redirect_link = reverse('form_builder:respond', args=('it-didnt-work-out',))
+        redirect_link = reverse(
+            'form_builder:respond',
+            args=(
+                'it-didnt-work-out',
+            ))
         interest_obj = get_object_or_404(Interest, id=interest_id)
-        kwargs={'Who was your match?': interest_obj.match.owner.get_full_name()}
-        return _deactivate(request.user, interest_id, redirect_link, kwargs=kwargs)
+        kwargs = {
+            'Who was your match?': interest_obj.match.owner.get_full_name()}
+        return _deactivate(
+            request.user, interest_id, redirect_link, kwargs=kwargs)
     except NoReverseMatch:
         return _deactivate(request.user, interest_id)

@@ -7,7 +7,7 @@ from django.db.models import Q
 
 class Interest(models.Model):
     CHOICE_LUNCH = "lunch"
-    CHOICE_COFFEE= "coffee"
+    CHOICE_COFFEE = "coffee"
     CHOICE_VIDEO = "video"
 
     owner = models.ForeignKey(User)
@@ -80,16 +80,17 @@ class Interest(models.Model):
             else:
                 return first + ' or ' + last
 
-
     def where_text(self):
-        return self._pretty_print_list([unicode(loc) for loc in self.locations.all()])
+        return self._pretty_print_list(
+            [unicode(loc) for loc in self.locations.all()])
 
     def departments_text(self):
         selected_depts = self.departments.all()
         if selected_depts.count() == OrgGroup.objects.filter(parent__isnull=True).count():
             return "any department"
         else:
-            return self._pretty_print_list([loc.title for loc in selected_depts])
+            return self._pretty_print_list(
+                [loc.title for loc in selected_depts])
 
     def find_matching_interests(self):
         """
@@ -105,23 +106,24 @@ class Interest(models.Model):
 
         meet_type_q = Q(id=None)  # always false -> non-factor in the OR query
         if self.for_lunch:
-            meet_type_q = meet_type_q|Q(for_lunch=True)
+            meet_type_q = meet_type_q | Q(for_lunch=True)
         if self.for_coffee:
-            meet_type_q = meet_type_q|Q(for_coffee=True)
+            meet_type_q = meet_type_q | Q(for_coffee=True)
         if self.video_chat:
-            meet_type_q = meet_type_q|Q(video_chat=True)
-        interests  = interests.filter(meet_type_q)
+            meet_type_q = meet_type_q | Q(video_chat=True)
+        interests = interests.filter(meet_type_q)
 
         if not self.video_chat:
-            location_type_q = Q(id=None)  # always false -> non-factor in the OR query
+            # always false -> non-factor in the OR query
+            location_type_q = Q(id=None)
             for location in self.locations.all():
-                location_type_q = location_type_q|Q(locations__in=[location])
-            interests  = interests.filter(location_type_q)
+                location_type_q = location_type_q | Q(locations__in=[location])
+            interests = interests.filter(location_type_q)
 
         dept_type_q = Q(id=None)  # always false -> non-factor in the OR query
         for dept in self.departments.all():
-            dept_type_q = dept_type_q|Q(departments__in=[dept])
-        interests  = interests.filter(dept_type_q)
+            dept_type_q = dept_type_q | Q(departments__in=[dept])
+        interests = interests.filter(dept_type_q)
 
         # order by oldest first
         interests = interests.order_by('created')
