@@ -3,7 +3,7 @@ from mystery.models import Interest
 from mystery.tests.utils import mock_req, random_user
 from mystery import views
 from mock import patch
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from core.models import OrgGroup, OfficeLocation
 from django.core.urlresolvers import reverse
 
@@ -42,7 +42,7 @@ class MatchTest(TestCase):
 
     def test_cancel_pending_match(self):
         """ Test cancellation before match is complete """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -63,7 +63,7 @@ class MatchTest(TestCase):
 
     def test_assigned_match(self):
         """ Test a valid match results in assigned match page """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -102,7 +102,7 @@ class MatchTest(TestCase):
 
     def test_assigned_video_match(self):
         """ Test a valid video match results in assigned match page """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -134,7 +134,7 @@ class MatchTest(TestCase):
 
     def test_cancel_assigned_match(self):
         """ Test cancellation of assigned match """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -166,7 +166,7 @@ class MatchTest(TestCase):
 
     def test_complete_assigned_match(self):
         """ Test closure of assigned match """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -198,7 +198,7 @@ class MatchTest(TestCase):
 
     def test_non_matching_type(self):
         """ Verify registrations with different meet type (lunch, etc) do not register as a match. """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -230,7 +230,7 @@ class MatchTest(TestCase):
 
     def test_non_matching_org(self):
         """ Verify registrations with different org do not register as a match. """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -266,7 +266,7 @@ class MatchTest(TestCase):
 
     def test_non_matching_location(self):
         """ Verify registrations with different location do not register as a match. """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -305,7 +305,7 @@ class MatchTest(TestCase):
 
     def test_non_matching_active(self):
         """ Verify registrations with different location do not register as a match. """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office = OfficeLocation.objects.all()[0]
@@ -336,7 +336,7 @@ class MatchTest(TestCase):
 
     def test_interest_save(self):
         """ Test interest initial_save function """
-        user1 = User.objects.get(username='test1@example.com')
+        user1 = get_user_model().objects.get(username='test1@example.com')
         self.client.login(username='test1@example.com', password='1')
 
         office_list = OfficeLocation.objects.all()
