@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from collab.settings import AUTH_USER_MODEL
 from django.core.exceptions import ValidationError
 from core.models import OfficeLocation, OrgGroup
 from django.db.models import Q
@@ -10,7 +10,7 @@ class Interest(models.Model):
     CHOICE_COFFEE = "coffee"
     CHOICE_VIDEO = "video"
 
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(AUTH_USER_MODEL)
     is_active = models.BooleanField(default=True)
     match = models.ForeignKey('self', null=True)
     for_lunch = models.BooleanField(default=False)
