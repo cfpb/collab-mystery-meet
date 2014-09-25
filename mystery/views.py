@@ -38,24 +38,26 @@ def _get_form_page(request):
     else:
         form = InterestForm()
 
+    params = _create_params(request)
+    params['form'] = form
     return render_to_response('mystery-meet/index.html',
-                              {'form': form},
+                              params,
                               context_instance=RequestContext(request))
 
 
 def _get_results_page(request, interest_obj):
-    p = _create_params(request)
+    params = _create_params(request)
 
     # find your last entered interest
-    p['interest_obj'] = interest_obj
+    params['interest_obj'] = interest_obj
 
     if interest_obj.match:
         match_person = Person.objects.get(user=interest_obj.match.owner)
-        p['match_person'] = match_person
-        p['match_locations'] = list(set(interest_obj.locations.all())
-                                    .intersection(set(interest_obj.match.locations.all())))
+        params['match_person'] = match_person
+        params['match_locations'] = list(set(interest_obj.locations.all())
+                                         .intersection(set(interest_obj.match.locations.all())))
     return render_to_response('mystery-meet/match_result.html',
-                              p,
+                              params,
                               context_instance=RequestContext(request))
 
 
