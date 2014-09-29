@@ -22,6 +22,9 @@ class Interest(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return self.owner.username
+
     def initial_save(self, locations=None, departments=None):
         super(Interest, self).save()
         if locations:
