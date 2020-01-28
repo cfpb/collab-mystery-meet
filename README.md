@@ -1,15 +1,15 @@
-#Mystery Meet
+# Mystery Meet
 
 [![Build Status](https://travis-ci.org/cfpb/collab-mystery-meet.svg?branch=master)](https://travis-ci.org/cfpb/collab-mystery-meet)
 
 *Mystery Meet* is a social app to meet people randomly at an organization for [Collab](https://github.com/cfpb/collab).
 
 
-##Screenshot
+## Screenshot
 
 ![index page](screenshots/main.png "Index Page")
 
-##Installation
+## Installation
 
 To use this application you will need to first have [Collab](https://github.com/cfpb/collab) installed.
 
@@ -30,6 +30,6 @@ Once the application is installed, add it to core collab's `INSTALLED_APPS` in y
 INSTALLED_APPS += ( 'mystery', )
 ```
 
-##Contributing
+## Contributing
 
 Please read the [contributing guide](./CONTRIBUTING.md).
